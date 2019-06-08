@@ -1,2 +1,4 @@
 /node_modules/
 /bitcoind-lnd/dockvolumes/.bitcoin/regtest/
+*.cert
+*.macaroon

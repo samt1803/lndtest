@@ -60,6 +60,34 @@ services:
 #      --autopilot.active
 #      --autopilot.maxchannels=5
 #      --autopilot.allocation=0.6
+  lnd2:
+    build: ./lnd
+    image: cherijs/lnd:latest
+    container_name: lnd2
+    restart: always
+    ports:
+      - "10010:10009"
+      - "9010:9735"
+    #    - "9735:9735"
+    volumes:
+      - ./lnd/lnd.conf:/root/.lnd/lnd.conf
+      - bitcoin:/root/.bitcoin/
+      - lnd2:/root/.lnd/ # data persistence
+    command:
+      --noseedbackup
+      --debuglevel=debug
+      --maxpendingchannels=10
+      --rpclisten=0.0.0.0:10009
+      --color=#4126a7
+      --alias=LND
+      --bitcoin.active
+      --bitcoin.regtest
+      --bitcoin.node=bitcoind
+      --bitcoind.rpchost=btc
+      --bitcoind.rpcuser=test
+      --bitcoind.rpcpass=test
+      --bitcoind.zmqpubrawblock=tcp://btc:28332
+      --bitcoind.zmqpubrawtx=tcp://btc:28333
 
 volumes:
   bitcoin:
@@ -72,5 +100,12 @@ volumes:
     driver: local
     driver_opts:
       type: none
-      device: "<own folder2>"
+      device: "<own folder>"
       o: bind
+  lnd2:
+    driver: local
+    driver_opts:
+      type: none
+      device: "<own folder>"
+      o: bind
+  
